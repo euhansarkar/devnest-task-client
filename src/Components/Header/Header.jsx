@@ -19,7 +19,7 @@ const Header = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const currentUser = useUser();
-console.log(currentUser);
+
   const showToast = () => {
     toast({
       title: `Logged In`,

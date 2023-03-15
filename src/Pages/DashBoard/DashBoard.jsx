@@ -15,16 +15,37 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
-import { ViewIcon, EditIcon } from "@chakra-ui/icons";
+import { ViewIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useUser } from "../../Contexts/AuthProvider/AuthProvider";
 import { Navigate } from "react-router-dom";
+import axios from "axios";
+import { deleteSelectedTask, findAllTaskRoute } from "../../Utils/ApiRoutes/APIRoutes";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const DashBoard = () => {
-  const tasks = useLoaderData();
-  // console.log(tasks);
-
   const currentUser = useUser();
-  console.log(currentUser);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `${findAllTaskRoute}/${
+          JSON.parse(localStorage.getItem(`devNest-user`))?.email
+        }`
+      )
+      .then((res) => setTasks(res.data.tasks));
+  }, []);
+
+
+  const deleteTask = (task) => {
+    const link = `${deleteSelectedTask}/${task?._id}`
+    axios.delete(link)
+    .then(res => {
+      console.log(res)
+    })
+  }
+
 
   return (
     <>
@@ -32,7 +53,7 @@ const DashBoard = () => {
         <Navigate to={`/login`} />
       ) : (
         <SimpleGrid columns={4} spacing={10} minChildWidth={250}>
-          {tasks.tasks.map((task, index) => (
+          {tasks.map((task, index) => (
             <Card
               key={index}
               gap={5}
@@ -42,12 +63,15 @@ const DashBoard = () => {
             >
               <CardHeader>
                 <Flex>
-                  <Avatar src={task.img} />
-                  <Box>
+                  <Avatar src="" />
+                  <Box ml={3}>
                     <Heading as={`h3`} size={`sm`}>
-                      {task.title}
+                      {task?.taskname}
                     </Heading>
-                    <Text>by {task.author}</Text>
+                    <Text>
+                      by{" "}
+                      {JSON.parse(localStorage.getItem(`devNest-user`))?.username}
+                    </Text>
                   </Box>
                 </Flex>
               </CardHeader>
@@ -55,11 +79,11 @@ const DashBoard = () => {
               <Divider borderColor={`gray.200`} />
               <CardFooter>
                 <HStack>
-                  <Button variant={`ghost`} leftIcon={<ViewIcon />}>
-                    watch
-                  </Button>
                   <Button variant={`ghost`} leftIcon={<EditIcon />}>
-                    comment
+                    edit
+                  </Button>
+                  <Button onClick={() => deleteTask(task)} variant={`ghost`} leftIcon={<DeleteIcon />}>
+                    remove
                   </Button>
                 </HStack>
               </CardFooter>

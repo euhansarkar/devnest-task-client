@@ -3,15 +3,12 @@ import { Outlet } from "react-router-dom";
 import Header from "../../Components/Header/Header";
 import { Grid, GridItem } from "@chakra-ui/react";
 import SideBar from "../../Components/SideBar/SideBar";
-import { useUser } from "../../Contexts/AuthProvider/AuthProvider";
-import { Navigate } from "react-router-dom";
 
 const Main = () => {
-  const currentUser = useUser();
 
   return (
     <>
-      (
+      
       <Grid templateColumns={`repeat(6, 1fr)`} bg={`gray.50`}>
         <GridItem
           as={`aside`}
