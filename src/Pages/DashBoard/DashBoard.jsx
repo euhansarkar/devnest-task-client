@@ -10,41 +10,64 @@ import {
   Flex,
   Heading,
   HStack,
-  Button, Divider, Avatar
+  Button,
+  Divider,
+  Avatar,
 } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { ViewIcon, EditIcon } from "@chakra-ui/icons";
+import { useUser } from "../../Contexts/AuthProvider/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 const DashBoard = () => {
   const tasks = useLoaderData();
-  console.log(tasks);
+  // console.log(tasks);
+
+  const currentUser = useUser();
+  console.log(currentUser);
 
   return (
-    <SimpleGrid columns={4} spacing={10} minChildWidth={250}>
-      {tasks.tasks.map((task) => (
-        <Card gap={5} borderTop="8px" borderColor="purple.400" bg={`white`}>
-          <CardHeader>
-            <Flex>
-              <Avatar src={task.img} />
-              <Box>
-                <Heading as={`h3`} size={`sm`}>
-                  {task.title}
-                </Heading>
-                <Text>by {task.author}</Text>
-              </Box>
-            </Flex>
-          </CardHeader>
-          <CardBody>{task.description}</CardBody>
-          <Divider borderColor={`gray.200`}/>
-          <CardFooter>
-            <HStack>
-              <Button variant={`ghost`} leftIcon={<ViewIcon />}>watch</Button>
-              <Button variant={`ghost`} leftIcon={<EditIcon />}>comment</Button>
-            </HStack>
-          </CardFooter>
-        </Card>
-      ))}
-    </SimpleGrid>
+    <>
+      {!currentUser ? (
+        <Navigate to={`/login`} />
+      ) : (
+        <SimpleGrid columns={4} spacing={10} minChildWidth={250}>
+          {tasks.tasks.map((task, index) => (
+            <Card
+              key={index}
+              gap={5}
+              borderTop="8px"
+              borderColor="purple.400"
+              bg={`white`}
+            >
+              <CardHeader>
+                <Flex>
+                  <Avatar src={task.img} />
+                  <Box>
+                    <Heading as={`h3`} size={`sm`}>
+                      {task.title}
+                    </Heading>
+                    <Text>by {task.author}</Text>
+                  </Box>
+                </Flex>
+              </CardHeader>
+              <CardBody>{task.description}</CardBody>
+              <Divider borderColor={`gray.200`} />
+              <CardFooter>
+                <HStack>
+                  <Button variant={`ghost`} leftIcon={<ViewIcon />}>
+                    watch
+                  </Button>
+                  <Button variant={`ghost`} leftIcon={<EditIcon />}>
+                    comment
+                  </Button>
+                </HStack>
+              </CardFooter>
+            </Card>
+          ))}
+        </SimpleGrid>
+      )}
+    </>
   );
 };
 

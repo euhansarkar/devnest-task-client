@@ -3,24 +3,31 @@ import { Outlet } from "react-router-dom";
 import Header from "../../Components/Header/Header";
 import { Grid, GridItem } from "@chakra-ui/react";
 import SideBar from "../../Components/SideBar/SideBar";
+import { useUser } from "../../Contexts/AuthProvider/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 const Main = () => {
+  const currentUser = useUser();
+
   return (
-    <Grid templateColumns={`repeat(6, 1fr)`} bg={`gray.50`}>
-      <GridItem
-        as={`aside`}
-        colSpan={{ base: 6, lg: 2, xl: 1 }}
-        bg={`purple.400`}
-        minHeight={{ lg: `100vh` }}
-        p={{ base: `20px`, lg: `30px` }}
-      >
-        <SideBar /> 
-      </GridItem>
-      <GridItem as={`main`} colSpan={{ base: 6, lg: 4, xl: 5 }} px={10}>
-        <Header />
-        <Outlet />
-      </GridItem>
-    </Grid>
+    <>
+      (
+      <Grid templateColumns={`repeat(6, 1fr)`} bg={`gray.50`}>
+        <GridItem
+          as={`aside`}
+          colSpan={{ base: 6, lg: 2, xl: 1 }}
+          bg={`purple.400`}
+          minHeight={{ lg: `100vh` }}
+          p={{ base: `20px`, lg: `30px` }}
+        >
+          <SideBar />
+        </GridItem>
+        <GridItem as={`main`} colSpan={{ base: 6, lg: 4, xl: 5 }} px={10}>
+          <Header />
+          <Outlet />
+        </GridItem>
+      </Grid>
+    </>
   );
 };
 

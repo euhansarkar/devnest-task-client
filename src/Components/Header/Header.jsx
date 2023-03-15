@@ -12,10 +12,14 @@ import {
   AvatarBadge,
 } from "@chakra-ui/react";
 import { UnlockIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../Contexts/AuthProvider/AuthProvider";
 
 const Header = () => {
+  const navigate = useNavigate();
   const toast = useToast();
-
+  const currentUser = useUser();
+console.log(currentUser);
   const showToast = () => {
     toast({
       title: `Logged In`,
@@ -28,6 +32,12 @@ const Header = () => {
     });
   };
 
+  const handleLogOut = async () => {
+    localStorage.clear();
+    showToast();
+    navigate(`/login`);
+  };
+
   return (
     <Flex as={`nav`} p="10px" alignItems="center" mb="40px">
       <Heading as={`h1`}>DevNest</Heading>
@@ -38,8 +48,8 @@ const Header = () => {
           <Text fontSize={`xs`} color="white">3</Text>
           </AvatarBadge>
         </Avatar>
-        <Text>euhansarkar@gmail.com</Text>
-        <Button onClick={showToast} colorScheme={`purple`}>logout</Button>
+        <Text>{currentUser?.email}</Text>
+        <Button onClick={handleLogOut} colorScheme={`purple`}>logout</Button>
       </HStack>
     </Flex>
   );
