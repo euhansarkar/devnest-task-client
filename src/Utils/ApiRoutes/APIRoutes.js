@@ -6,3 +6,4 @@ export const allUsersRoute = `${host}api/auth/allusers`
 export const addTaskRoute = `${host}api/task/addTask`
 export const findAllTaskRoute = `${host}api/task/myalltasks`
 export const deleteSelectedTask = `${host}api/task/deletetask`
+export const modifySelectedTask = `${host}api/task/modifytask`
