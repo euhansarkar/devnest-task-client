@@ -1,9 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import {
-  SimpleGrid,
-  Button,
-  Card
-} from "@chakra-ui/react";
+import { SimpleGrid, Button, Card } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { useUser } from "../../Contexts/AuthProvider/AuthProvider";
 import { Navigate } from "react-router-dom";
@@ -19,30 +16,51 @@ import Task from "./Task/Task";
 
 const DashBoard = () => {
   const currentUser = useUser();
-  const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(
+  const {
+    data: tasks,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: [
+      `tasks`,
+      JSON.parse(localStorage.getItem(`devNest-user`))?.email,
+    ],
+    queryFn: async () => {
+      const res = await fetch(
         `${findAllTaskRoute}/${
           JSON.parse(localStorage.getItem(`devNest-user`))?.email
         }`
-      )
-      .then((res) => setTasks(res.data.tasks));
-  }, []);
+      );
+      const data = await res.json();
+      return data.tasks;
+    },
+  });
+
+
+  if (isLoading) {
+    return `...........loading`;
+  }
+
 
   const handleDeleteTask = (task) => {
     const link = `${deleteSelectedTask}/${task?._id}`;
     axios.delete(link).then((res) => {
-      console.log(res);
+      if(res.status){
+        refetch();
+      }
     });
   };
 
   const handleEditTask = (task) => {
     axios
-      .patch(`${modifySelectedTask}/${task._id}`, {...task})
-      .then((res) => console.log(res));
-  }
+      .patch(`${modifySelectedTask}/${task._id}`, { ...task })
+      .then((res) => {
+        if(res.status){
+          refetch();
+        }
+      });
+  };
 
   return (
     <>
@@ -50,8 +68,13 @@ const DashBoard = () => {
         <Navigate to={`/login`} />
       ) : (
         <SimpleGrid columns={4} spacing={10} minChildWidth={250}>
-          {tasks.map((task, index) => (
-          <Task task={task} index={index} handleDeleteTask={handleDeleteTask} handleEditTask={handleEditTask} />
+          {tasks?.map((task, index) => (
+            <Task
+              task={task}
+              index={index}
+              handleDeleteTask={handleDeleteTask}
+              handleEditTask={handleEditTask}
+            />
           ))}
         </SimpleGrid>
       )}
