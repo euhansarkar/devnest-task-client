@@ -22,7 +22,7 @@ const Header = () => {
 
   const showToast = () => {
     toast({
-      title: `Logged In`,
+      title: `Logged out`,
       description: `Successfully Logged Out`,
       duration: 5000,
       isClosable: true,

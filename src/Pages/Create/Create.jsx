@@ -1,3 +1,4 @@
+import { CalendarIcon, UnlockIcon } from "@chakra-ui/icons";
 import {
   Box,
   FormControl,
@@ -18,6 +19,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useUser } from "../../Contexts/AuthProvider/AuthProvider";
 import { addTaskRoute } from "../../Utils/ApiRoutes/APIRoutes";
@@ -25,6 +27,7 @@ import { addTaskRoute } from "../../Utils/ApiRoutes/APIRoutes";
 const Create = () => {
   const toast = useToast();
   const currentUser = useUser();
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     taskname: ``,
     taskcategory: ``,
@@ -33,19 +36,17 @@ const Create = () => {
     endtime: ``,
   });
 
-  // console.log(currentUser?.email)
-
-  // const showToast = () => {
-  //   toast({
-  //     title: `task inserted successfully`,
-  //     description: `Successfully added task`,
-  //     duration: 2000,
-  //     isClosable: true,
-  //     status: `success`,
-  //     position: `top`,
-  //     icon: <UnlockIcon />,
-  //   });
-  // };
+  const showToast = (title, description, status) => {
+   return toast({
+      title,
+      description,
+      duration: 2000,
+      isClosable: true,
+      status,
+      position: `top`,
+      icon: <CalendarIcon />,
+    });
+  };
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -67,16 +68,25 @@ const Create = () => {
       });
       console.log(data);
       if (data.status === false) {
-        toast(`data adding failed`);
+        showToast(
+          `data adding failed`,
+          `your expected data not added to your tasklist`,
+          `error`
+        );
       } else {
-        toast(`data added successfully`);
+        showToast(
+          `data added successfully`,
+          `successfully added a task on your tasklist`,
+          `success`
+        );
+        navigate(`/`);
       }
     }
   };
 
   return (
     <>
-      {!currentUser ? (
+      {!JSON.parse(localStorage.getItem(`devNest-user`)) ? (
         <Navigate to={`/login`} />
       ) : (
         <Form onSubmit={(e) => handleSubmit(e)} method="post" action="/create">
@@ -107,25 +117,25 @@ const Create = () => {
 
             <GridItem>
               <FormControl isRequired mb="5px">
-                <FormLabel>Start Time:</FormLabel>
+                <FormLabel>Start Date:</FormLabel>
                 <Input
                   onChange={(e) => handleChange(e)}
-                  type="text"
+                  type="date"
                   name="starttime"
                 />
-                <FormHelperText>task start time</FormHelperText>
+                <FormHelperText>task start date</FormHelperText>
               </FormControl>
             </GridItem>
 
             <GridItem>
               <FormControl isRequired mb="5px">
-                <FormLabel>End Time</FormLabel>
+                <FormLabel>End Date</FormLabel>
                 <Input
                   onChange={(e) => handleChange(e)}
-                  type="text"
+                  type="date"
                   name="endtime"
                 />
-                <FormHelperText>Task End Time</FormHelperText>
+                <FormHelperText>Task End date</FormHelperText>
               </FormControl>
             </GridItem>
 

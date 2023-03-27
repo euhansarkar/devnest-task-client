@@ -15,12 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: `/`,
-        element: <Home />,
-      },
-      {
-        path: `/dashboard`,
-        element: <DashBoard />,
-        loader: async () => fetch(`db.json`),
+        element: <DashBoard/>,
       },
       {
         path: `/profile`,

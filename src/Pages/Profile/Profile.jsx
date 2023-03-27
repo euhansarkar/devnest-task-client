@@ -26,7 +26,7 @@ const Profile = () => {
 
   return (
     <>
-      {!currentUser ? (
+      {!JSON.parse(localStorage.getItem(`devNest-user`)) ? (
         <Navigate to={`/login`} />
       ) : (
         <Tabs>

@@ -21,17 +21,12 @@ import { Link } from "react-router-dom";
 import { loginRoute } from "../../Utils/ApiRoutes/APIRoutes";
 
 function LogIn() {
+  const toast = useToast();
   const navigate = useNavigate();
   const [values, setValues] = useState({
     username: ``,
     password: ``,
   });
-
-  useEffect(() => {
-    if (localStorage.getItem(`devNest-user`)) {
-      navigate(`/`);
-    }
-  }, [navigate]);
 
   const showToast = () => {
     toast({
@@ -87,7 +82,7 @@ function LogIn() {
     <Container>
       <Box p={6} maxWidth="sm" mx="auto" bg={`gray.300`} borderRadius="2xl">
         <Box textAlign="center">
-          <Heading>Create an account</Heading>
+          <Heading>Login</Heading>
         </Box>
         <form onSubmit={(e) => handleSubmit(e)}>
           <Stack spacing={4} mt={8}>
@@ -112,10 +107,10 @@ function LogIn() {
             </FormControl>
 
             <Button type="submit" colorScheme="blue" mt={8}>
-              Sign up
+              login
             </Button>
             <Text mt={4}>
-              already have an account? please <Link to={`/login`}>Login</Link>
+              new to this site? <Link to={`/register`}>Register</Link>
             </Text>
           </Stack>
         </form>

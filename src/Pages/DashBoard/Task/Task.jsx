@@ -42,13 +42,13 @@ const Task = ({ task, handleDeleteTask, handleEditTask }) => {
     _id: task?._id,
   });
 
+
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const { taskname, taskcategory, description, starttime, endtime } = values;
     handleEditTask(values);
   };
 
@@ -90,12 +90,14 @@ const Task = ({ task, handleDeleteTask, handleEditTask }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
+          <Text>Update Your Task</Text>
             <ModalCloseButton />
           </ModalHeader>
 
           <ModalBody>
             <form id="new-note" onSubmit={handleSubmit}>
-              <FormControl>
+              <FormControl mb={2}>
+               <FormLabel>task title</FormLabel>
                 <Input
                   onChange={(e) => handleChange(e)}
                   type="text"
@@ -104,7 +106,8 @@ const Task = ({ task, handleDeleteTask, handleEditTask }) => {
                 />
               </FormControl>
 
-              <FormControl>
+              <FormControl mb={2}>
+               <FormLabel>task category</FormLabel>
                 <Input
                   onChange={(e) => handleChange(e)}
                   type="text"
@@ -113,7 +116,8 @@ const Task = ({ task, handleDeleteTask, handleEditTask }) => {
                 />
               </FormControl>
 
-              <FormControl>
+              <FormControl mb={2}>
+               <FormLabel>task description</FormLabel>
                 <Input
                   onChange={(e) => handleChange(e)}
                   type="text"
@@ -122,19 +126,21 @@ const Task = ({ task, handleDeleteTask, handleEditTask }) => {
                 />
               </FormControl>
 
-              <FormControl>
+              <FormControl mb={2}>
+               <FormLabel>task start date</FormLabel>
                 <Input
                   onChange={(e) => handleChange(e)}
-                  type="text"
+                  type="date"
                   name="starttime"
                   defaultValue={task.starttime}
                 />
               </FormControl>
 
-              <FormControl>
+              <FormControl mb={2}>
+               <FormLabel>task end date</FormLabel>
                 <Input
                   onChange={(e) => handleChange(e)}
-                  type="text"
+                  type="date"
                   name="endtime"
                   defaultValue={task.endtime}
                 />
@@ -143,7 +149,7 @@ const Task = ({ task, handleDeleteTask, handleEditTask }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button type="submit" form="new-note" onClose={onClose}>
+            <Button type="submit" onClick={onClose} form="new-note">
               Submit
             </Button>
           </ModalFooter>

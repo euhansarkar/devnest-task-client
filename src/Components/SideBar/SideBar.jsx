@@ -3,14 +3,20 @@ import { CalendarIcon, EditIcon, AtSignIcon } from "@chakra-ui/icons";
 import { List, ListItem, ListIcon } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 const SideBar = () => {
-
-    
   return (
-    <List color={`white`} fontSize={`1.2em`} spacing={4}>
+    <List
+      color={`white`}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      flexDirection={{ base: "row", lg: "column" }}
+      fontSize={`1.2em`}
+      gap="6"
+    >
       <ListItem>
         <NavLink to={`/`}>
           <ListIcon as={CalendarIcon} color="white" />
-          DashBoard 
+          DashBoard
         </NavLink>
       </ListItem>
       <ListItem>
@@ -29,7 +35,4 @@ const SideBar = () => {
   );
 };
 
-
 export default SideBar;
-
-
